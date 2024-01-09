@@ -1,18 +1,18 @@
 #-*- encoding=utf8 -*-
 import time
 from termcolor import colored
-
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.keys import Keys
 
 
 class WebPage(object):
 
     _web_driver = None
 
-    def __init__(self, web_driver, url=''):
-        self._web_driver = web_driver
+    def __init__(self, web_browser, url=''):
+        self._web_driver = web_browser
         self.get(url)
 
     def __setattr__(self, name, value):
@@ -102,6 +102,7 @@ class WebPage(object):
 
                 assert ignore, 'JS error "{0}" on the page!'.format(log_message)
 
+
     def wait_page_loaded(self, timeout=60, check_js_complete=True,
                          check_page_changes=False, check_images=False,
                          wait_for_element=None,
@@ -185,3 +186,20 @@ class WebPage(object):
 
         # Go up:
         self._web_driver.execute_script('window.scrollTo(document.body.scrollHeight, 0);')
+
+    def open_new_tab(self, url=None):
+        """ Open a new tab in the same browser session. """
+        self._web_driver.execute_script("window.open('', '_blank');")
+        if url:
+            # Switch to the new tab and navigate to the specified URL
+            self._web_driver.switch_to.window(self._web_driver.window_handles[-1])
+            self.get(url)
+
+    def switch_second_tab(self):
+        all_tabs = self._web_driver.window_handles
+        self._web_driver.switch_to.window(all_tabs[1])
+
+    def switch_first_tab(self):
+        all_tabs = self._web_driver.window_handles
+        self._web_driver.switch_to.window(all_tabs[0])
+

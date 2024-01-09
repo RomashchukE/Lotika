@@ -6,10 +6,10 @@ from pages.elements import WebElement, ManyWebElements
 
 class AuthPage(WebPage):
 
-    def __init__(self, web_driver, url=''):
+    def __init__(self, web_browser, url=''):
         if not url:
             url = os.getenv("MAIN_URL") or 'https://dev.lotika.ru/login'
-        super().__init__(web_driver, url)
+        super().__init__(web_browser, url)
 
     # Auth form
     auth_btn = WebElement(class_name='.sc-jWOkvS.iZspci')

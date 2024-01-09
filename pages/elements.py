@@ -1,6 +1,7 @@
 import time
-from termcolor import colored
+from typing import List, Any
 
+from termcolor import colored
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -13,7 +14,7 @@ class WebElement(object):
     _web_driver = None
     _page = None
     _timeout = 10
-    _wait_after_click = False  # TODO: how we can wait after click?
+    _wait_after_click = False
 
     def __init__(self, timeout=10, wait_after_click=False, **kwargs):
         self._timeout = timeout
@@ -36,6 +37,7 @@ class WebElement(object):
 
         return element
 
+
     def wait_to_be_clickable(self, timeout=10, check_visibility=True):
         """ Wait until the element will be ready for click. """
 
@@ -46,7 +48,7 @@ class WebElement(object):
                 EC.element_to_be_clickable(self._locator)
             )
         except:
-            print(colored('Element not clickable!', 'red'))
+            pass
 
         if check_visibility:
             self.wait_until_not_visible()
@@ -122,16 +124,12 @@ class WebElement(object):
 
     def get_text(self):
         """ Get text of the element. """
-
         element = self.find()
-        text = ''
-
         try:
-            text = str(element.text)
+            return element.text
         except Exception as e:
             print('Error: {0}'.format(e))
-
-        return text
+            return None
 
     def get_attribute(self, attr_name):
         """ Get attribute of the element. """
@@ -150,6 +148,14 @@ class WebElement(object):
             element.clear()
 
         element.send_keys(value)
+
+    def clear_by_backspaces(self):
+        """ Clear the text from the specified text field using backspaces. """
+        element = self.find()
+        # Select the current text in the input field
+        element.send_keys(Keys.CONTROL + 'a')
+        # Press the backspace key to delete the selected text
+        element.send_keys(Keys.BACKSPACE)
 
     def click(self, hold_seconds=0, x_offset=1, y_offset=1):
         """ Wait and click the element. """
@@ -201,7 +207,7 @@ class WebElement(object):
 
         # Scroll page to the element:
         # Option #1 to scroll to element:
-        # self._web_driver.execute_script("arguments[0].scrollIntoView();", element)
+        self._web_driver.execute_script("arguments[0].scrollIntoView();", element)
 
         # Option #2 to scroll to element:
         try:
@@ -216,6 +222,8 @@ class WebElement(object):
 
         # Delete element:
         self._web_driver.execute_script("arguments[0].remove();", element)
+
+
 
 
 class ManyWebElements(WebElement):
@@ -255,6 +263,12 @@ class ManyWebElements(WebElement):
         return len(elements)
 
     def get_text(self):
+        """ Get text of element. """
+        element = self.find()
+        return str(element.text())
+
+
+    def get_elements_text(self):
         """ Get text of elements. """
 
         elements = self.find()
