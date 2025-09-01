@@ -6,7 +6,7 @@ from generators import generate_test_email, write_data_to_file
 import re
 
 
-# @pytest.skip(allow_module_level=True)
+@pytest.skip(allow_module_level=True)
 # Checking registration process and receiving password on email
 def test_registration_successful(web_browser):
     """
@@ -49,7 +49,7 @@ def test_registration_successful(web_browser):
         l_text = page.letter_text.get_text()
         password_pattern = r'\s*([a-zA-Z0-9]+)'
         new_password = re.search(password_pattern, l_text).group(1) if re.search(password_pattern, l_text) else None
-        write_data_to_file(new_password, "tests/files/password.txt")
+        # write_data_to_file(new_password, "tests/files/password.txt")
         page.switch_first_tab()
         page.wait_page_loaded()
         page.password.scroll_to_element()

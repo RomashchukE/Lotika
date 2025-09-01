@@ -3,6 +3,7 @@ import os
 from pages.base_page import WebPage
 from pages.elements import WebElement, ManyWebElements
 
+
 class LotikaAutoPage(WebPage):
     def __init__(self, web_browser, url=''):
         if not url:

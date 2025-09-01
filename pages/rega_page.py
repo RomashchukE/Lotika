@@ -7,7 +7,7 @@ from pages.elements import WebElement
 class RegaPage(WebPage):
     def __init__(self, web_browser, url=''):
         if not url:
-            url = os.getenv("AUTH_URL") or 'https://dev.lotika.ru/registration'
+            url = os.getenv("AUTH_URL") or 'https://lotika.ru/registration'
         super().__init__(web_browser, url)
 
     # Registration form

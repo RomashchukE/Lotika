@@ -18,7 +18,7 @@ def test_successful_auth(web_browser):
         page.login.wait_to_be_clickable()
         assert page.forgot_link.is_presented()
         assert page.register_link.is_presented()
-        page.login.send_keys('shumak@gmail.com')
+        page.login.send_keys('ch@gmail.com')
         page.password.send_keys('123456')
         page.submit_btn.click()
         page.profile_btn.wait_to_be_clickable()
